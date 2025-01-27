@@ -5,7 +5,7 @@ export const getAllBooks = (req: Request, res: Response): void => {
     
     try {
         const { title, author, genre } = req.query;  // Extract query parameters
-        let filteredBooks = bookService.getAllBooks();
+        let filteredBooks = bookService.getAllBooks({});
 
         // Apply filters based on the query parameters
         if (title) {
@@ -25,8 +25,8 @@ export const getAllBooks = (req: Request, res: Response): void => {
                 book.genre.toLowerCase().includes((genre as string).toLowerCase())
             );
         }
-        const books = bookService.getAllBooks();
-        res.status(200).json({ message: "Books retrieved", data: books });
+        
+        res.status(200).json({ message: "Books retrieved", data: filteredBooks });
     } catch (error) {
         res.status(500).json({ message: "Error retrieving books" });
     }

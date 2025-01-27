@@ -1,4 +1,4 @@
-import { Book } from "../models/bookModel.ts";
+import { Book } from "../models/bookModel";
 
 const books: Book[] = [
     {
@@ -24,8 +24,29 @@ const books: Book[] = [
     },
 ];
 
-export const getAllBooks = (): Book[] => {
-    return books;
+export const getAllBooks = (filters: { [key: string]: string | boolean }): Book[] => {
+    let filteredBooks = books;  // Start with all books
+
+    // Apply filters based on the provided filters object
+    if (filters.title) {
+        filteredBooks = filteredBooks.filter((book) =>
+            book.title.toLowerCase().includes((filters.title as string).toLowerCase())
+        );
+    }
+
+    if (filters.author) {
+        filteredBooks = filteredBooks.filter((book) =>
+            book.author.toLowerCase().includes((filters.author as string).toLowerCase())
+        );
+    }
+
+    if (filters.genre) {
+        filteredBooks = filteredBooks.filter((book) =>
+            book.genre.toLowerCase().includes((filters.genre as string).toLowerCase())
+        );
+    }
+    
+    return filteredBooks;
 };
 
 /**

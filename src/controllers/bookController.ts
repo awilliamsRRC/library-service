@@ -2,7 +2,29 @@ import { Request, Response } from "express";
 import * as bookService from "../services/bookService";
 
 export const getAllBooks = (req: Request, res: Response): void => {
+    
     try {
+        const { title, author, genre } = req.query;  // Extract query parameters
+        let filteredBooks = bookService.getAllBooks();
+
+        // Apply filters based on the query parameters
+        if (title) {
+            filteredBooks = filteredBooks.filter((book) =>
+                book.title.toLowerCase().includes((title as string).toLowerCase())
+            );
+        }
+
+        if (author) {
+            filteredBooks = filteredBooks.filter((book) =>
+                book.author.toLowerCase().includes((author as string).toLowerCase())
+            );
+        }
+
+        if (genre) {
+            filteredBooks = filteredBooks.filter((book) =>
+                book.genre.toLowerCase().includes((genre as string).toLowerCase())
+            );
+        }
         const books = bookService.getAllBooks();
         res.status(200).json({ message: "Books retrieved", data: books });
     } catch (error) {
